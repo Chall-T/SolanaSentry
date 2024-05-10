@@ -1,5 +1,9 @@
 import { getMetadataPlane } from "./metadata";
-import { getTokenLargestAccountsPlane, getTransactions } from "./tokenData";
+import {
+  getTokenLargestAccountsPlane,
+  getTransactions,
+  getTokenPricePlane,
+} from "./tokenData";
 import express from "express";
 
 export const getTokenReport = async (
@@ -14,15 +18,18 @@ export const getTokenReport = async (
       next({ statusCode: 400, message: "Missing params" });
     }
 
-    let [metadataResult, largestAccountsResult] = await Promise.allSettled([
-      getMetadataPlane(token),
-      getTokenLargestAccountsPlane(token),
-    ]);
+    let [metadataResult, largestAccountsResult, priceResult] =
+      await Promise.allSettled([
+        getMetadataPlane(token),
+        getTokenLargestAccountsPlane(token),
+        getTokenPricePlane(token),
+      ]);
     let response = {
       metadata: metadataResult,
       largestAccounts: largestAccountsResult,
+      price: priceResult,
     };
-    return res.status(200).json(response);
+    return res.status(200).json({ data: response });
   } catch (error) {
     return next(error);
   }

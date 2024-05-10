@@ -1,6 +1,6 @@
 import express from "express";
 
-type SentryError = {
+export type SentryError = {
   statusCode?: number;
   message?: string;
   stack?: string;
