@@ -4,6 +4,21 @@ import { PublicKey } from "@solana/web3.js";
 
 import base58 from "bs58";
 
+export const getMetadataPlane = async (token: string) => {
+  let metadata;
+  try {
+    metadata = await getMetadataMP(new PublicKey(token));
+  } catch (error) {
+    return { statusCode: 400, message: "Invalid public key input" };
+  }
+
+  if (!metadata) {
+    return { statusCode: 404, message: "Token not found" };
+  }
+
+  return { statusCode: 200, data: metadata };
+};
+
 export const getMetadata = async (
   req: express.Request,
   res: express.Response,
@@ -15,27 +30,15 @@ export const getMetadata = async (
     if (!token) {
       next({ statusCode: 400, message: "Missing params" });
     }
-    let metadata;
-    try {
-      metadata = await getMetadataMP(new PublicKey(token));
-    } catch (error) {
-      next({ statusCode: 400, message: "Invalid public key input" });
+    let result = await getMetadataPlane(token);
+
+    if (result.statusCode == 200) {
+      return res.status(200).json({ data: result.data });
+    } else {
+      next(result);
     }
-    if (!metadata) {
-      next({ statusCode: 404, message: "Token not found" });
-      return;
-    }
-    return res.status(200).json({ data: metadata }).end();
   } catch (error) {
     console.log(error);
     next(error);
   }
-};
-
-export const getMetadataNoParams = (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  next({ statusCode: 400, message: "Missing params" });
 };

@@ -1,14 +1,12 @@
-import express from "express";
 import * as dotenv from "dotenv";
-import http from 'http';
-import {server} from "./utils/server"
-dotenv.config({ path: __dirname + "/../.env" });
+dotenv.config({ path: __dirname + `/../.env.${process.env.NODE_ENV}` });
+import express from "express";
+import http from "http";
+import { server } from "./utils/server";
 
+const app = server();
 
-const app = server()
-
-const API = http.createServer(app)
-
+const API = http.createServer(app);
 
 const PORT = process.env.PORT || 3000;
 const DOMAIN = process.env.DOMAIN || "localhost";
