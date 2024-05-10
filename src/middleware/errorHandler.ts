@@ -4,6 +4,7 @@ export type SentryError = {
   statusCode?: number;
   message?: string;
   stack?: string;
+  timeTaken?: number;
 };
 
 export const ErrorHandler = (
@@ -21,10 +22,12 @@ export const ErrorHandler = (
   if (process.env.NODE_ENV === "development") {
     error.stack = err.stack;
   }
-
-  res.status(errStatus).json({
-    error,
-  });
+  if (error.timeTaken){
+    error.timeTaken = err.timeTaken;
+  }
+    res.status(errStatus).json({
+      error,
+    });
 };
 
 export default ErrorHandler;

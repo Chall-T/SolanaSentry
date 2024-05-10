@@ -16,13 +16,14 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.12.10",
+    "@types/node": "^20.12.11",
     "typescript": "^5.4.5"
   },
   "dependencies": {
     "@metaplex-foundation/js": "^0.20.1",
     "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.1",
+    "@project-serum/serum": "^0.13.65",
     "@solana/web3.js": "^1.91.8",
     "base58-js": "^2.0.0",
     "cors": "^2.8.5",

@@ -4,7 +4,9 @@ import {
   getTransactions,
   getTokenLargestAccounts,
   getTokenPrice,
+  getAllMarketsForCoin,
 } from "../controllers/tokenData";
+import { getLpByToken } from "../controllers/market";
 import { getTokenReport } from "../controllers/report";
 
 export default (router: express.Router) => {
@@ -13,4 +15,5 @@ export default (router: express.Router) => {
   router.get("/tokens/:token/transactions", getTransactions);
   router.get("/tokens/:token/accounts/", getTokenLargestAccounts);
   router.get("/tokens/:token/price/", getTokenPrice);
+  router.get("/tokens/:token/markets/", getLpByToken);
 };

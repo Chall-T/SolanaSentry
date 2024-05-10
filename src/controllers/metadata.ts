@@ -6,17 +6,24 @@ import base58 from "bs58";
 
 export const getMetadataPlane = async (token: string) => {
   let metadata;
+  const timeStart = Date.now();
   try {
     metadata = await getMetadataMP(new PublicKey(token));
   } catch (error) {
+    const timeStop = Date.now();
     return { statusCode: 400, message: "Invalid public key input" };
   }
 
   if (!metadata) {
+    const timeStop = Date.now();
     return { statusCode: 404, message: "Token not found" };
   }
-
-  return { statusCode: 200, data: metadata };
+  let response: any = { statusCode: 200, data: metadata };
+  const timeStop = Date.now();
+  if (process.env.NODE_ENV === "development") {
+    response.timeTaken = (timeStop - timeStart)/1000;
+  }
+  return response;
 };
 
 export const getMetadata = async (
